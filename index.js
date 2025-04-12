@@ -4,11 +4,14 @@ const { OpenAI } = require('openai');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 app.use(express.raw({ type: 'application/json' }));
+
+// Simple health-check route
+app.get('/', (req, res) => res.send('Railway is explicitly running'));
 
 app.post('/api/interactions', async (req, res) => {
   const signature = req.headers['x-signature-ed25519'];
@@ -22,6 +25,7 @@ app.post('/api/interactions', async (req, res) => {
   const interaction = JSON.parse(body.toString());
 
   if (interaction.type === InteractionType.PING) {
+    console.log('Received PING explicitly from Discord');
     return res.json({ type: InteractionResponseType.PONG });
   }
 
@@ -45,5 +49,5 @@ app.post('/api/interactions', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Discord GPT bot explicitly running on port ${PORT}`);
+  console.log(`Emily bot explicitly running on port ${PORT}`);
 });
