@@ -28,4 +28,22 @@ app.post('/api/interactions', async (req, res) => {
   if (interaction.type === InteractionType.APPLICATION_COMMAND) {
     const userPrompt = interaction.data.options[0].value;
 
-    const gptResponse = await
+    const gptResponse = await openai.chat.completions.create({
+      model: 'gpt-4o',
+      messages: [{ role: 'user', content: userPrompt }],
+    });
+
+    const reply = gptResponse.choices[0].message.content;
+
+    return res.json({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: { content: reply },
+    });
+  }
+
+  return res.status(400).send('Unhandled Interaction');
+});
+
+app.listen(PORT, () => {
+  console.log(`Discord GPT bot explicitly running on port ${PORT}`);
+});
