@@ -8,3 +8,6 @@ TMZ4X3SDVJ
 T2PTZVQH3Z
 HC976FWTBS
 F8RHJW2BRD
+
+
+ngrok config add-authtoken 2vco7qjtaY76r2FacMmzVsk9lrA_KtZpzDgCxT82tanAyRRX

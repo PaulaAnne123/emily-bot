@@ -10,8 +10,12 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 app.use(express.raw({ type: 'application/json' }));
 
-// Simple health-check route
-app.get('/', (req, res) => res.send('Railway is explicitly running'));
+app.get('/', (req, res) => res.send('Railway explicitly running'));
+
+// YOU MUST HAVE EXACTLY THIS HANDLER:
+app.get('/api/interactions', (req, res) => {
+  res.status(405).send('Bad request signature');
+});
 
 app.post('/api/interactions', async (req, res) => {
   const signature = req.headers['x-signature-ed25519'];
